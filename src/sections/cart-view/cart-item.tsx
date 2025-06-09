@@ -14,7 +14,7 @@ export function CartItem({
   removeItem: (id: number) => void;
 }) {
   return (
-    <Card key={item.productId}>
+    <Card>
       <CardContent className="p-6">
         <div className="flex gap-4">
           <div className="relative">

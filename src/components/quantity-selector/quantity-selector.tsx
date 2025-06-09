@@ -15,27 +15,21 @@ export function QuantitySelector({ productId }: { productId: number }) {
   } = useCart();
 
   const { user } = useAuth();
-  const [quantity, setQuantity] = useState<number>(0);
 
   const { mutate: addCartItemApi } = useAddCardItem({
     onSuccess: (data) => {
       data.products.map((currProdcut) => addItem(currProdcut.productId));
     },
-    onError: (error) => {
+    onError: (error, { products }) => {
       toast.error(error.message);
+      products.map((currProdcut) => addItem(currProdcut.productId));
     },
   });
 
-  useEffect(() => {
-    setQuantity(isInCart(productId) ? getItemQuantity(productId) : 1);
-  }, [isInCart(productId)]);
-
   const updateQuantity = (mode: "remove" | "add") => {
-    setQuantity((prev) => {
-      const newVal = mode === "add" ? prev + 1 : prev - 1;
-      updateInCartQuantity(productId, newVal);
-      return newVal;
-    });
+    const prev = getItemQuantity(productId);
+    const newVal = mode === "add" ? prev + 1 : prev - 1;
+    updateInCartQuantity(productId, newVal);
   };
   return (
     <div className="w-full">
@@ -45,11 +39,13 @@ export function QuantitySelector({ productId }: { productId: number }) {
             variant="outline"
             size="icon"
             onClick={() => updateQuantity("remove")}
-            disabled={quantity <= 0}
+            disabled={getItemQuantity(productId) <= 0}
           >
             <Minus className="h-4 w-4" />
           </Button>
-          <span className="w-12 text-center font-medium">{quantity}</span>
+          <span className="w-12 text-center font-medium">
+            {getItemQuantity(productId)}
+          </span>
           <Button
             variant="outline"
             size="icon"
