@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -24,12 +24,10 @@ import { toast } from "sonner";
 import { useGetProduct } from "@/api/get-product";
 import { QuantitySelector } from "@/components/quantity-selector/quantity-selector";
 
-export default function SingleProductView({
-  productId,
-}: {
-  productId: number;
-}) {
+export default function SingleProductView() {
   const router = useRouter();
+  const { id } = useParams();
+  const productId = Number(id);
 
   const { data: product, isLoading } = useGetProduct({ productId: productId });
 
