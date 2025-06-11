@@ -28,15 +28,21 @@ import { CONFIG } from "@/global-config";
 import { useAuth } from "@/hooks/use-auth";
 import { useProducts } from "@/hooks/use-products";
 import { useCart } from "@/hooks/use-cart";
+import { usePathname, useRouter } from "next/navigation";
 
 export function Header() {
   const { isAuthenticated, signOut } = useAuth();
   const { searchProducts } = useProducts();
   const { itemCount: cartItemCount } = useCart();
   const [searchValue, setSearchValue] = useState<string>("");
+  const pathname = usePathname();
+  const router = useRouter();
 
   const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
+      if (pathname !== `${ROUTES.main.products}/`) {
+        router.push(ROUTES.main.products);
+      }
       searchProducts(searchValue);
       setSearchValue("");
     }
