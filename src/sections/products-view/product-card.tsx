@@ -1,6 +1,4 @@
 import { QuantitySelector } from "@/components/quantity-selector/quantity-selector";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -8,16 +6,14 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { ROUTES } from "@/constants/routes";
-import { useCart } from "@/hooks/use-cart";
 import { Product } from "@/types";
-import { ShoppingCart, Star } from "lucide-react";
+import { Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 export function ProductCard({ product }: { product: Product }) {
-  const { addItem, isInCart, removeItem, clearCart } = useCart();
   return (
-    <Card className="group hover:shadow-lg transition-shadow">
+    <Card className="group hover:shadow-lg transition-shadow flex flex-col justify-between">
       <CardHeader className="p-2 relative">
         <Link href={`${ROUTES.main.products}/${product.id}`}>
           <Image
